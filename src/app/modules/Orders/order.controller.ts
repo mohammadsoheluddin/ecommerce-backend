@@ -84,7 +84,7 @@ const getOrdersByEmail = async (req: Request, res: Response) => {
       });
     }
 
-    const orders = await Order.find({ email });
+    const orders = await Order.find({ email: email });
     res.status(200).json({
       success: true,
       message: 'Orders fetched successfully for user email!',
