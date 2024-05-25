@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import {
   TProduct,
   TVariant,
@@ -8,7 +8,7 @@ import {
 
 const VariantSchema = new Schema<TVariant>({
   type: { type: String, required: true },
-  value: { type: Schema.Types.Mixed, required: true }, // Schema.Types.Mixed allows for both string and number
+  value: { type: Schema.Types.Mixed, required: true },
 });
 
 const InventorySchema = new Schema<TInventory>({
