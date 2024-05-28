@@ -32,7 +32,7 @@ const updateProductInDBById = async (
 };
 
 const searchProductsFromDB = async (searchTerm: string) => {
-  const regex = new RegExp(searchTerm, 'i');
+  const regex = new RegExp(searchTerm, 'iphone');
   const result = await Product.find({ name: { $regex: regex } });
   return result;
 };

@@ -18,4 +18,10 @@ const getAController = (req: Request, res: Response) => {
 
 app.get('/', getAController);
 
+const handleNotFound = (req: Request, res: Response) => {
+  res.status(500).json({ success: false, message: 'Route not found' });
+};
+
+app.use(handleNotFound);
+
 export default app;

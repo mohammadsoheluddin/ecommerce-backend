@@ -8,7 +8,7 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   // Validate product ID and check inventory
   const product = await Product.findById(productId);
   if (!product) {
-    throw new Error('Product not found');
+    throw new Error('Order not found');
   }
 
   if (product.inventory.quantity < quantity) {
@@ -27,11 +27,13 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   return savedOrder;
 };
 
+// Get All Orders
 const getAllOrdersFromDB = async () => {
   const orders = await Order.find();
   return orders;
 };
 
+// Get Order By Email
 const getOrdersByEmailFromDB = async (email: string) => {
   const orders = await Order.find({ email });
   return orders;

@@ -22,7 +22,7 @@ const createOrder = async (req: Request, res: Response) => {
     if (!product) {
       return res
         .status(404)
-        .json({ success: false, message: 'Product not found' });
+        .json({ success: false, message: 'Order not found' });
     }
 
     if (product.inventory.quantity < quantity) {
@@ -85,6 +85,13 @@ const getOrdersByEmail = async (req: Request, res: Response) => {
     }
 
     const orders = await Order.find({ email: email });
+    if (orders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No orders found for the provided email',
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'Orders fetched successfully for user email!',
