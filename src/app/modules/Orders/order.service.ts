@@ -33,9 +33,10 @@ const getAllOrdersFromDB = async () => {
   return orders;
 };
 
-// Get Order By Email
 const getOrdersByEmailFromDB = async (email: string) => {
-  const orders = await Order.find({ email });
+  // Use RegExp to match exact email, case-insensitive
+  const emailRegex = new RegExp(`^${email}$`, 'i');
+  const orders = await Order.find({ email: emailRegex });
   return orders;
 };
 

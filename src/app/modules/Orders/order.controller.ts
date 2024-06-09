@@ -46,7 +46,7 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: savedOrder,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating order:', error);
     res.status(500).json({
       success: false,
@@ -58,13 +58,33 @@ const createOrder = async (req: Request, res: Response) => {
 
 const getAllOrders = async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find();
-    res.status(200).json({
-      success: true,
-      message: 'Orders fetched successfully!',
-      data: orders,
-    });
-  } catch (error) {
+    const { email } = req.query;
+    if (!email) {
+      // If email is not provided, fetch all orders
+      const orders = await Order.find();
+      res.status(200).json({
+        success: true,
+        message: 'Orders fetched successfully!',
+        data: orders,
+      });
+    } else {
+      // If email is provided, fetch orders by email
+      const orders = await Order.find({
+        email: email.toString().toLowerCase(),
+      });
+      if (orders.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'No orders found for the provided email',
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: 'Orders fetched successfully for user email!',
+        data: orders,
+      });
+    }
+  } catch (error: any) {
     console.error('Error fetching orders:', error);
     res.status(500).json({
       success: false,
@@ -84,7 +104,8 @@ const getOrdersByEmail = async (req: Request, res: Response) => {
       });
     }
 
-    const orders = await Order.find({ email: email });
+    const orders = await Order.find({ email: email.toLowerCase() });
+
     if (orders.length === 0) {
       return res.status(404).json({
         success: false,
@@ -97,7 +118,7 @@ const getOrdersByEmail = async (req: Request, res: Response) => {
       message: 'Orders fetched successfully for user email!',
       data: orders,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching orders by email:', error);
     res.status(500).json({
       success: false,
